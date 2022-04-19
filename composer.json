@@ -13,6 +13,9 @@
             "email": "evanxian9@gmail.com"
         }
     ],
+    "files": [
+        "src/functions.php"
+    ],
     "require": {
         "ext-redis": "*",
         "ext-mbstring": "*",
