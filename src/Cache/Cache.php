@@ -2,34 +2,47 @@
 
 namespace MixPlus\Db\Cache;
 
+use MixPlus\Db\Redis\BaseRedis;
+use MixPlus\Db\Redis\Redis;
+
 class Cache implements CacheInterface
 {
-    public static function set(string $key, string $value, int $timeout = 0): bool
+    /**
+     * @var Redis 
+     */
+    protected $redis;
+    
+    public function __construct()
     {
-        return redis()->set($key, $value, $timeout);
+        $this->redis = new BaseRedis(config('redis'));    
     }
 
-    public static function get(string $key): bool|string
+    public function set(string $key, string $value, int $timeout = 0): bool
     {
-        return redis()->get($key);
+        return $this->redis->set($key, $value, $timeout);
     }
 
-    public static function has(string $key): bool
+    public function get(string $key): bool|string
     {
-        return (bool)redis()->get($key);
+        return $this->redis->get($key);
     }
 
-    public static function del(...$key): int
+    public function has(string $key): bool
     {
-        return redis()->del($key);
+        return (bool)$this->redis->get($key);
     }
 
-    public static function getOrSet(string $key, callable $callable): bool|string
+    public function del(...$key): int
     {
-        $value = redis()->get($key);
+        return $this->redis->del($key);
+    }
+
+    public function getOrSet(string $key, callable $callable): bool|string
+    {
+        $value = $this->redis->get($key);
         if (!$value) {
             $value = $callable();
-            redis()->set($key, $value, 3600);
+            $this->redis->set($key, $value, 3600);
         }
         return $value;
     }

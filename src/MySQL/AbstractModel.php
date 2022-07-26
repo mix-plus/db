@@ -11,13 +11,19 @@ abstract class AbstractModel implements ModelInterface
 
     protected string $primaryKey = 'id';
 
+    public function getDb()
+    {
+        return new BaseModel(config('database'));
+    }
 
     public function getOneId(int $id, array $columns = ['*']): array
     {
         $columns = implode(',', $columns);
         $key = $this->table . "_cache:{$this->primaryKey}_{$id}:" . md5("id_{$id},columns_{$columns}");
-        $data = Cache::getOrSet($key, function () use ($id, $columns) {
-            $data = db()->table($this->table)->where("{$this->primaryKey} = ?", $id)->select($columns)->first();
+        $data = (new Cache)->getOrSet($key, function () use ($id, $columns) {
+            $data = $this->getDb()->get($this->table, $columns, [
+                "{$this->primaryKey}[=]" => $id,
+            ]);
             return serialize($data);
         });
         return (array)unserialize($data);
@@ -35,7 +41,7 @@ abstract class AbstractModel implements ModelInterface
             }
         }
 
-        $data = Cache::getOrSet($key, function () use ($where, $columns, $options) {
+        $data = (new Cache)->getOrSet($key, function () use ($where, $columns, $options) {
             $db = db()->table($this->table);
             $data = $this->optionWhere($db, $where, $options)->select($columns)->first();
             return serialize($data);
@@ -72,7 +78,7 @@ abstract class AbstractModel implements ModelInterface
     {
         // $this->table . "_cache:{$this->primaryKey}_{$value[2]}:" . md5("where_{$tmpWhere},columns_{$columns},options_{$tmpOptions}");
 //        $key = $this->table . "_cache:{$this->primaryKey}_{$id}:";
-//        Cache::del()
+//        (new Cache)->del()
         return db()->table($this->table)->where("{$this->primaryKey} = ?", $id)->updates($data)->rowCount();
     }
 

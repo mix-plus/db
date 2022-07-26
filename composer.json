@@ -1,32 +1,30 @@
 {
-    "name": "mix-plus/db",
-    "description": "mysql redis pool",
-    "license": "Apache-2.0",
-    "autoload": {
-        "psr-4": {
-            "MixPlus\\Db\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "cexll",
-            "email": "evanxian9@gmail.com"
-        }
-    ],
-    "files": [
-        "src/functions.php"
-    ],
-    "require": {
-        "ext-redis": "*",
-        "ext-mbstring": "*",
-        "swoole/ide-helper": "^4.8",
-        "mix/database": "^3.0",
-        "mix-plus/framework": "dev-master"
-    },
-    "repositories": {
-        "mix-plus/framework": {
-            "type": "path",
-            "url": "../framework"
-        }
+  "name": "mix-plus/db",
+  "description": "mysql redis pool",
+  "license": "Apache-2.0",
+  "autoload": {
+    "psr-4": {
+      "MixPlus\\Db\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "cexll",
+      "email": "evanxian9@gmail.com"
+    }
+  ],
+  "require": {
+    "ext-redis": "*",
+    "ext-mbstring": "*",
+    "ext-pdo": "*",
+    "swoole/ide-helper": "^4.8",
+    "mix/database": "^3.0",
+    "mix-plus/framework": "dev-master"
+  },
+  "repositories": {
+    "mix-plus/framework": {
+      "type": "path",
+      "url": "../framework"
+    }
+  }
 }
