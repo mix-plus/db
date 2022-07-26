@@ -19,7 +19,8 @@
     "ext-pdo": "*",
     "swoole/ide-helper": "^4.8",
     "mix/database": "^3.0",
-    "mix-plus/framework": "dev-master"
+    "mix-plus/framework": "dev-master",
+    "ext-sysvmsg": "*"
   },
   "repositories": {
     "mix-plus/framework": {
